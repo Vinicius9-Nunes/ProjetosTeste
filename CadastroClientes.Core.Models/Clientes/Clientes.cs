@@ -1,4 +1,6 @@
-﻿namespace CadastroClientes.Core.Models.Clientes
+﻿using Newtonsoft.Json;
+
+namespace CadastroClientes.Core.Models.Clientes
 {
     public class Clientes
     {
@@ -6,10 +8,11 @@
         public int Idade { get; set; }
         public string Cpf { get; set; }
 
-        public Clientes(string nome, int idade)
+        public Clientes(string nome, int idade, string Cpf)
         {
             Nome = nome;
             Idade = idade;
+            this.Cpf = Cpf;
         }
     }
 }

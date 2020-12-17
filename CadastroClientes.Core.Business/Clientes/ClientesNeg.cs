@@ -1,33 +1,50 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-
+using System.IO;
 
 namespace CadastroClientes.Core.Business.Clientes
 {
     public class ClientesNeg
     {
-        public static List<Models.Clientes.Clientes> GetCliente(string[] cliente)
+        //Método para da Get na lista de clientes
+        public static List<Models.Clientes.Clientes> GetClientes()
         {
-            List<Models.Clientes.Clientes> listClientes = new List<Models.Clientes.Clientes>();
-            string[] aux;
-            if (cliente.Length > 0)
+            try
             {
-                foreach (string s in cliente)
-                {
-                    aux = s.Split(',');
-                    string nome = aux[0];
-                    int idade = int.Parse(aux[1]);
-                    if (Util.TamanhoNomeValido(listClientes))
-                    {
-                        Models.Clientes.Clientes c = new Models.Clientes.Clientes(nome, idade);
-                        listClientes.Add(c);
-                    }
-                }
+                string path = @"C:\Curso VS\teste\CadastroCliente.Core-API\Arquivos\arq.js";
+                List<Models.Clientes.Clientes> listClientes = new List<Models.Clientes.Clientes>();
+                string text = File.ReadAllText(path);
+                listClientes = JsonConvert.DeserializeObject<List<Models.Clientes.Clientes>>(text);
                 return listClientes;
             }
-            else
-                throw new ApplicationException("Não foi informado nenhum Cliente");
-
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+        //Método para incluir cliente na lista
+        public static void PostCliente(Models.Clientes.Clientes cliente)
+        {
+            try
+            {
+                string path = @"C:\Curso VS\teste\CadastroCliente.Core-API\Arquivos\arq.js";
+                List<Models.Clientes.Clientes> clientes = new List<Models.Clientes.Clientes>();
+                string text = File.ReadAllText(path);
+                if (!string.IsNullOrEmpty(text))
+                    clientes = JsonConvert.DeserializeObject<List<Models.Clientes.Clientes>>(text);
+                if (Util.TamanhoNomeValido(clientes))
+                    clientes.Add(cliente);
+                using (StreamWriter sw = new StreamWriter(path))
+                {
+                    sw.WriteLine(JsonConvert.SerializeObject(clientes));
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            
         }
     }
 }

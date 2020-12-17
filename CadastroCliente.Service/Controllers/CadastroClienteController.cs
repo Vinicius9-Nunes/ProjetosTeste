@@ -14,12 +14,24 @@ namespace CadastroCliente.Service.Controllers
         {
             try
             {
-                string cliente = "Vinicius O. Nunes,21";
-                string c1 = "Ana,28";
-                string c2 = "Bruno,33";
-                string[] vetCliente = { cliente, c1, c2 };
+                return Request.CreateResponse(HttpStatusCode.OK, CadastroClientes.Core.Business.Clientes.ClientesNeg.GetClientes());
+            }
+            catch (Exception e)
+            {
 
-                return Request.CreateResponse(HttpStatusCode.OK, CadastroClientes.Core.Business.Clientes.ClientesNeg.GetCliente(vetCliente));
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, new Exception(e.Message));
+            }
+        }
+
+        [HttpPost]
+        [Route("post")]
+        public HttpResponseMessage PostClientes([FromBody] CadastroClientes.Core.Models.Clientes.Clientes cliente)
+        {
+            try
+            {
+                CadastroClientes.Core.Business.Clientes.ClientesNeg.PostCliente(cliente);
+                string sucesso = "Cliente Cadastrado com sucesso";
+                return Request.CreateResponse(HttpStatusCode.OK, sucesso);
             }
             catch (Exception e)
             {
