@@ -33,7 +33,7 @@ namespace CadastroClientes.Core.Business.Clientes
                 string text = File.ReadAllText(path);
                 if (!string.IsNullOrEmpty(text))
                     clientes = JsonConvert.DeserializeObject<List<Models.Clientes.Clientes>>(text);
-                if (Util.TamanhoNomeValido(clientes))
+                if (Util.TamanhoNomeValido(cliente))
                     clientes.Add(cliente);
                 using (StreamWriter sw = new StreamWriter(path))
                 {
